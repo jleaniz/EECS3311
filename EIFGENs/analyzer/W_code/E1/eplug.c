@@ -113,7 +113,7 @@ void egc_init_plug (void)
 	egc_forg_table = egc_forg_table_init;
 
 	egc_system_name = "analyzer";
-	egc_system_location = "C:\\Users\\Juan Leaniz\\Documents\\analyzer\\EIFGENs\\analyzer\\W_code";
+	egc_system_location = "C:\\Users\\Juan Leaniz\\Downloads\\3311\\analyzer\\EIFGENs\\analyzer\\W_code";
 	egc_compiler_tag = 38;
 	egc_project_version = 1574788803;
 	egc_has_old_special_semantic = 0;

@@ -7,14 +7,13 @@ note
 deferred class
 	EXPRESSION
 
-feature -- methods
-
+feature -- Commands
 	output: STRING
-		deferred
-		end
+	deferred
+	end
 
-	accept(v: VISITOR)
-		deferred
-		end
+	accept (v: VISITOR)
+	deferred
+	end
 
 end

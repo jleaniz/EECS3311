@@ -63,7 +63,7 @@ EIF_TYPED_VALUE F1322_14069 (EIF_REFERENCE Current)
 	RTIV(Current, RTAL);
 	RTHOOK(1);
 	RTDBGAL(0, 0x10000000, 1,0); /* Result */
-	ti4_1 = (((FUNCTION_CAST(EIF_TYPED_VALUE, (EIF_REFERENCE)) RTWF(11677, dtype))(Current)).it_i4);
+	ti4_1 = (((FUNCTION_CAST(EIF_TYPED_VALUE, (EIF_REFERENCE)) RTWF(11679, dtype))(Current)).it_i4);
 	Result = (EIF_INTEGER_32) ti4_1;
 	RTVI(Current, RTAL);
 	RTRS;

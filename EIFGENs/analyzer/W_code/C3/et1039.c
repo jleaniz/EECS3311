@@ -22,7 +22,6 @@ extern void EIF_Minit1039(void);
 }
 #endif
 
-#include "eif_out.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -185,13 +184,10 @@ EIF_TYPED_VALUE F1039_9965 (EIF_REFERENCE Current)
 	GTCX
 	char *l_feature_name = "out";
 	RTEX;
-	EIF_TYPED_VALUE up1x = {{0}, SK_POINTER};
-#define up1 up1x.it_p
 	EIF_TYPED_VALUE ur1x = {{0}, SK_REF};
 #define ur1 ur1x.it_r
 	EIF_REFERENCE tr1 = NULL;
 	EIF_REFERENCE tr2 = NULL;
-	EIF_INTEGER_32 ti4_1;
 	EIF_REFERENCE Result = ((EIF_REFERENCE) 0);
 	
 	RTCDT;
@@ -225,24 +221,15 @@ EIF_TYPED_VALUE F1039_9965 (EIF_REFERENCE Current)
 	RTNHOOK(1,1);
 	Result = (EIF_REFERENCE) RTCCL(tr1);
 	RTHOOK(2);
-	tr1 = RTMS_EX_H("System State: default model state ",34,426998304);
+	tr1 = RTMS_EX_H("Status: OK",10,1160562507);
 	ur1 = tr1;
 	(FUNCTION_CAST(void, (EIF_REFERENCE, EIF_TYPED_VALUE)) RTVF(4821, "append", Result))(Result, ur1x);
 	RTHOOK(3);
-	tr1 = RTMS_EX_H("(",1,40);
-	ur1 = tr1;
-	(FUNCTION_CAST(void, (EIF_REFERENCE, EIF_TYPED_VALUE)) RTVF(4821, "append", Result))(Result, ur1x);
-	RTHOOK(4);
-	ti4_1 = *(EIF_INTEGER_32 *)(Current + RTWA(7747, dtype));
-	tr1 = c_outi(ti4_1);
-	ur1 = RTCCL(tr1);
-	(FUNCTION_CAST(void, (EIF_REFERENCE, EIF_TYPED_VALUE)) RTVF(4821, "append", Result))(Result, ur1x);
-	RTHOOK(5);
-	tr1 = RTMS_EX_H(")",1,41);
+	tr1 = RTMS_EX_H("Number of classes being specified: ",35,2055805472);
 	ur1 = tr1;
 	(FUNCTION_CAST(void, (EIF_REFERENCE, EIF_TYPED_VALUE)) RTVF(4821, "append", Result))(Result, ur1x);
 	if (RTAL & CK_ENSURE) {
-		RTHOOK(6);
+		RTHOOK(4);
 		RTCT("out_not_void", EX_POST);
 		if ((EIF_BOOLEAN)(Result != NULL)) {
 			RTCK;
@@ -252,14 +239,13 @@ EIF_TYPED_VALUE F1039_9965 (EIF_REFERENCE Current)
 	}
 	RTVI(Current, RTAL);
 	RTRS;
-	RTHOOK(7);
+	RTHOOK(5);
 	RTDBGLE;
 	RTMD(0);
 	RTLE;
 	RTLO(2);
 	RTEE;
 	{ EIF_TYPED_VALUE r; r.type = SK_REF; r.it_r = Result; return r; }
-#undef up1
 #undef ur1
 }
 
