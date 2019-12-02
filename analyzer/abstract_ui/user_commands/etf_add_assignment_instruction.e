@@ -15,6 +15,7 @@ feature -- command
 		require else
 			add_assignment_instruction_precond(cn, fn, n)
     	do
+    		model.reset_flags
 			-- check if an assignment is being set
 			if model.assignment_instruction_on then
 				model.set_error_assignment_on (model.current_routine, model.current_class.name)
@@ -29,6 +30,7 @@ feature -- command
 						model.set_class_found (True)
 						model.set_current_class (model.classes.item)
 					end
+					model.classes.forth
 				end
 
 				-- if the class is not found, set the appropriate error
@@ -49,6 +51,7 @@ feature -- command
 					model.set_assignment_flag (True)
 					model.current_assignment_instruction.make (cn, fn, n)
 				end
+
 			end
 			etf_cmd_container.on_change.notify ([Current])
     	end

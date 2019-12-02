@@ -15,6 +15,7 @@ feature -- command
 		require else
 			add_command_precond(cn, fn, ps)
     	do
+    		model.reset_flags
 			-- check if an assignment is being set
 			if model.assignment_instruction_on then
 				model.set_error_assignment_on (model.current_routine, model.current_class.name)
@@ -29,6 +30,7 @@ feature -- command
 						model.set_class_found (True)
 						model.set_current_class (model.classes.item)
 					end
+					model.classes.forth
 				end
 
 				-- if the class is not found, set the appropriate error
@@ -48,6 +50,7 @@ feature -- command
 				if model.status_ok then
 					model.set_routine_being_implemented_flag (True)
 					model.set_current_routine (fn)
+					model.current_command.make_empty
 					model.current_command.set_name(fn)
 					model.current_command.set_params(ps)
 					model.current_class.add_command (model.current_command)

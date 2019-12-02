@@ -38,6 +38,22 @@ feature -- Constructors
 	end
 
 feature -- Commands
+
+	set_class_name (n: STRING)
+	do
+		class_name := n
+	end
+
+	set_feature_name (n: STRING)
+	do
+		feature_name := n
+	end
+
+	set_var_name (n: STRING)
+	do
+		var_name := n
+	end
+
 	out: STRING
 	do
 		create Result.make_from_string(" ")

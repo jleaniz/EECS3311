@@ -15,7 +15,7 @@ feature -- command
 		require else
 			add_class_precond(cn)
     	do
-
+    		model.reset_flags
 			-- check if an assignment is being specified
 			if model.assignment_instruction_on then
 				model.set_error_assignment_on (model.current_routine, model.current_class.name)
@@ -26,6 +26,7 @@ feature -- command
 						model.set_error_class_exists (cn)
 					end
 				end
+
 				-- if the status is ok, add the class...
 				if model.status_ok then
 					model.current_class.make (cn)

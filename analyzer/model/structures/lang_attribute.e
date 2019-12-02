@@ -36,6 +36,18 @@ feature -- Constructor
 		create type.make_empty
 	end
 
+feature -- Commands
+	set_name (n: STRING)
+	do
+		name := n
+	end
+
+	set_type (n: STRING)
+	do
+		type := n
+	end
+
+
 feature -- Queries
 	out: STRING
 	do

@@ -29,6 +29,23 @@ feature -- Constructor
 		create return_type.make_empty
 	end
 
+feature -- Commands
+
+	set_name (n: STRING)
+	do
+		name := n
+	end
+
+	set_params (p: ARRAY[TUPLE[STRING]])
+	do
+		parameters := p
+	end
+
+	set_return_type (r: STRING)
+	do
+		return_type := r
+	end
+
 feature -- Queries
 	out: STRING
 	do

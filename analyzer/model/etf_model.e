@@ -148,6 +148,12 @@ feature -- model operations
 		routine_being_implemented := b
 	end
 
+	reset_flags
+	do
+   		set_status (True)
+    	set_class_found (False)
+	end
+	
 feature -- queries
 	out : STRING
 		do
