@@ -15,16 +15,18 @@ feature -- command
 		require else
 			add_class_precond(cn)
     	do
-			-- perform some update on the model state
+
+			-- check if an assignment is being specified
 			if model.assignment_instruction_on then
 				model.set_error_assignment_on (model.current_routine, model.current_class.name)
 			else
+				-- check if the class already exists
 				across model.classes is c loop
 					if c.name ~ cn then
 						model.set_error_class_exists (cn)
 					end
 				end
-
+				-- if the status is ok, add the class...
 				if model.status_ok then
 					model.current_class.make (cn)
 					model.classes.extend (model.current_class)
