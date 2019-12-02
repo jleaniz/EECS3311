@@ -178,7 +178,7 @@ feature -- queries
 			-- TODO: Fix this to use the pretty printer for all assigned expressions
 			if assignment_instruction_on then
 				Result.append ("%N")
-				Result.append ("  Assignment being specified: " + current_assignment_instruction.out + " := ?")
+				Result.append ("  Assignment being specified:" + current_assignment_instruction.out + " := ?")
 			end
 		end
 

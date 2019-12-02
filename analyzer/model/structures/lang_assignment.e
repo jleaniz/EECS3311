@@ -8,10 +8,11 @@ class
 	LANG_ASSIGNMENT
 
 inherit
-	ANY
+	LANG_FEATURE
 	redefine
 		out
 	end
+
 
 create
 	make, make_empty
@@ -39,7 +40,7 @@ feature -- Constructors
 feature -- Commands
 	out: STRING
 	do
-		create Result.make_from_string("  ")
+		create Result.make_from_string(" ")
 		Result.append (var_name)
 	end
 

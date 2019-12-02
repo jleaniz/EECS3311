@@ -8,7 +8,7 @@ class
 	LANG_ATTRIBUTE
 
 inherit
-	ANY
+	LANG_FEATURE
 	redefine
 		out
 	end

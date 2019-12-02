@@ -36,6 +36,13 @@ feature -- command
 					model.set_error_class_not_found (cn)
 				end
 
+				-- check if feature name eists
+				across model.current_class.commands is command loop
+					if command.name ~ fn then
+						model.set_feature_already_exists (cn, fn)
+					end
+				end
+
 				-- status_ok being True means the class exists and no other error was found
 				-- we can continue to add the command to the class
 				if model.status_ok then

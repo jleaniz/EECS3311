@@ -8,7 +8,7 @@ class
 	LANG_CLASS
 
 inherit
-	ANY
+	LANG_FEATURE
 	redefine
 		out
 	end
@@ -18,6 +18,7 @@ create
 
 feature -- Attributes
 	name: STRING -- class name
+	features: ARRAY[LANG_FEATURE] -- array of features
 	attributes: LINKED_LIST[LANG_ATTRIBUTE] -- list of attributes
 	commands: LINKED_LIST[LANG_COMMAND] -- list of commands
 	queries: LINKED_LIST[LANG_QUERY] -- list of queries
@@ -26,6 +27,7 @@ feature -- Constructor
 	make (cn: STRING)
 	do
 		name := cn
+		create features.make_empty
 		create attributes.make
 		create commands.make
 		create queries.make
@@ -33,6 +35,7 @@ feature -- Constructor
 
 	make_empty
 	do
+		create features.make_empty
 		create attributes.make
 		create commands.make
 		create queries.make
@@ -42,26 +45,22 @@ feature -- Constructor
 feature -- Commands
 
 	-- add a new attribute to the class
-	add_attribute (a: LANG_ATTRIBUTE)
+	add_attribute  (a: LANG_ATTRIBUTE)
 	do
 		attributes.extend (a)
+		features.force (a, features.count + 1)
 	end
 
-	-- add a new command to the class
 	add_command (a: LANG_COMMAND)
 	do
 		commands.extend (a)
+		features.force (a, features.count + 1)
 	end
 
-	-- add a new query to the class
-	add_queries (a: LANG_QUERY)
+	add_query (a: LANG_QUERY)
 	do
 		queries.extend (a)
-	end
-
-	set_name (n: STRING)
-	do
-		name := n
+		features.force (a, features.count + 1)
 	end
 
 

@@ -8,7 +8,7 @@ class
 	LANG_COMMAND
 
 inherit
-	ANY
+	LANG_FEATURE
 	redefine
 		out
 	end
