@@ -6,15 +6,20 @@ note
 
 class
 	ETF_ADD_CALL_CHAIN
-inherit 
+inherit
 	ETF_ADD_CALL_CHAIN_INTERFACE
 create
 	make
-feature -- command 
+feature -- command
 	add_call_chain(chain: ARRAY[STRING])
     	do
 			-- perform some update on the model state
-			model.default_update
+			if model.assignment_instruction_on then
+				model.default_update
+			else
+				model.set_error_assignment_unspecified
+			end
+			
 			etf_cmd_container.on_change.notify ([Current])
     	end
 

@@ -1,11 +1,12 @@
 note
-	description: "Summary description for {ADDITION}."
+	description: "Summary description for {LESS_THAN}."
 	author: ""
 	date: "$Date$"
 	revision: "$Revision$"
 
 class
-	ADDITION
+	LESS_THAN
+
 
 inherit
 	EXPRESSION

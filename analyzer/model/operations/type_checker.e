@@ -27,6 +27,56 @@ feature {ETF_MODEL} --hidden
 
 feature -- Visitor
 
+	visit_addition (e: ADDITION)
+	do
+
+	end
+
+	visit_substraction (e: SUBTRACTION)
+	do
+
+	end
+
+	visit_multiplication (e: MULTIPLICATION)
+	do
+
+	end
+
+	visit_quotient (e: QUOTIENT)
+	do
+
+	end
+
+	visit_modulo (e: MODULO)
+	do
+		
+	end
+
+	visit_logical_and (e: LOGICAL_AND)
+	do
+
+	end
+
+	visit_logical_or (e: LOGICAL_OR)
+	do
+
+	end
+
+	visit_equals (e: EQUALS)
+	do
+
+	end
+
+	visit_less_than (e: LESS_THAN)
+	do
+
+	end
+
+	visit_greater_than (e: GREATER_THAN)
+	do
+
+	end
+
 	visit_integer(e: INTEGER_CONSTANT)
 	do
 
@@ -36,44 +86,6 @@ feature -- Visitor
 	do
 
 	end
-
---	visit_current(e: CURRENT_EXPRESSION)
---	do
---		type_correct:=False
---	end
-
---	visit_nil(e: NIL_EXPRESSION)
---	do
---		type_correct:=false
---	end
-
---	visit_integer(e: INTEGER_CONSTANT)
---  		do
---			if attached {INTEGER}e.integer then
---				value := 1
---				type_correct := True
---			end
---		end
-
---	visit_boolean(e: BOOLEAN_CONSTANT)
---		do
---			if attached {BOOLEAN}e.boolean then
---				value := 2
---				type_correct := True
---			end
---		end
-
---	visit_add(e: ADD)
---		local
---			left_tc: BOOLEAN
---			right_tc: BOOLEAN
---		do
---			e.left.accept (Current)
---			left_tc := (value = 1)
---			e.right.accept (Current)
---			right_tc := (value = 1)
---			type_correct := left_tc and right_tc
---		end
 
 
 feature -- Attributes

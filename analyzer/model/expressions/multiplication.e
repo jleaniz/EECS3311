@@ -5,7 +5,7 @@ note
 	revision: "$Revision$"
 
 class
-	ADDITION
+	MULTIPLICATION
 
 inherit
 	EXPRESSION

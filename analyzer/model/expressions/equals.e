@@ -1,11 +1,11 @@
 note
-	description: "Summary description for {ADDITION}."
+	description: "Summary description for {EQUALS}."
 	author: ""
 	date: "$Date$"
 	revision: "$Revision$"
 
 class
-	ADDITION
+	EQUALS
 
 inherit
 	EXPRESSION
@@ -36,5 +36,4 @@ feature
 
 invariant
 	binary_operation: children.count = 2
-
 end

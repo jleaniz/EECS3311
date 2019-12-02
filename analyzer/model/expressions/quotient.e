@@ -1,11 +1,11 @@
 note
-	description: "Summary description for {ADDITION}."
+	description: "Summary description for {QUOTIENT}."
 	author: ""
 	date: "$Date$"
 	revision: "$Revision$"
 
 class
-	ADDITION
+	QUOTIENT
 
 inherit
 	EXPRESSION

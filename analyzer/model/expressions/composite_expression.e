@@ -5,12 +5,12 @@ note
 	revision: "$Revision$"
 
 deferred class
-	COMPOSITE[G]
+	COMPOSITE_EXPRESSION[G]
 
 feature -- Attributes
 	children: LINKED_LIST[G]
-	left: G
-	right: G
+	left: EXPRESSION
+	right: EXPRESSION
 
 feature -- Commands
 	add_children (nc: G)

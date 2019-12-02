@@ -16,7 +16,7 @@ feature -- Attributes
 feature -- Commands
 	accept (v: VISITOR)
 	do
-
+		v.visit_integer (Current)
 	end
 
 	output: STRING
@@ -24,5 +24,7 @@ feature -- Commands
 		Result := value.out
 	end
 
+invariant
+	positive_integer: value > 0
 
 end

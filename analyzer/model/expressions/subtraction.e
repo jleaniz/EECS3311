@@ -5,7 +5,7 @@ note
 	revision: "$Revision$"
 
 class
-	ADDITION
+	SUBTRACTION
 
 inherit
 	EXPRESSION
@@ -31,7 +31,7 @@ feature
 
 	output: STRING
 	do
-		Result := left.output + right.output
+		Result := left.output + "-" + right.output
 	end
 
 invariant
