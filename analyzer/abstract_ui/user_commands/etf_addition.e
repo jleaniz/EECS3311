@@ -15,7 +15,7 @@ feature -- command
     	do
 			-- perform some update on the model state
 			if model.assignment_instruction_on then
-				model.default_update
+
 			else
 				model.set_error_assignment_unspecified
 			end

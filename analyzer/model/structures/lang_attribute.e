@@ -7,8 +7,14 @@ note
 class
 	LANG_ATTRIBUTE
 
+inherit
+	ANY
+	redefine
+		out
+	end
+
 create
-	make
+	make, make_empty
 
 feature -- Attributes
 	name: STRING
@@ -23,5 +29,19 @@ feature -- Constructor
 			type := att_type
 		end
 	end
+
+	make_empty
+	do
+		create name.make_empty
+		create type.make_empty
+	end
+
+feature -- Queries
+	out: STRING
+	do
+		create Result.make_from_string ("  +")
+		Result.append (name + ": " + type + "%N")
+	end
+
 
 end

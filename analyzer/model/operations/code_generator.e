@@ -1,11 +1,11 @@
 note
-	description: "Summary description for {TYPE_CHECK}."
+	description: "Summary description for {CODE_GENERATOR}."
 	author: ""
 	date: "$Date$"
 	revision: "$Revision$"
 
 class
-	TYPE_CHECKER
+	CODE_GENERATOR
 
 inherit
 	VISITOR
@@ -15,6 +15,7 @@ create
 feature {NONE} -- Constructor
 	make
 	do
+		create code.make_empty
 	end
 
 feature {ETF_MODEL} --hidden
@@ -24,8 +25,7 @@ feature {ETF_MODEL} --hidden
 	end
 
 feature -- Attributes
-	value: INTEGER
-	type_correct: BOOLEAN
+	code: STRING
 
 feature -- Visitor
 
@@ -91,5 +91,6 @@ feature -- Visitor
 	do
 
 	end
+
 
 end

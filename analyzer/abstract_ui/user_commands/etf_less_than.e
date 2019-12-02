@@ -6,15 +6,14 @@ note
 
 class
 	ETF_LESS_THAN
-inherit 
+inherit
 	ETF_LESS_THAN_INTERFACE
 create
 	make
-feature -- command 
+feature -- command
 	less_than
     	do
 			-- perform some update on the model state
-			model.default_update
 			etf_cmd_container.on_change.notify ([Current])
     	end
 

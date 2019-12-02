@@ -14,20 +14,21 @@ create
 	make
 
 feature {NONE} -- Constructor
-
 	make
-		do
-			create text.make_empty
-		end
+	do
+		create text.make_empty
+	end
 
 feature {ETF_MODEL} --hidden
-
 	reset
-		do
-			make
-		end
+	do
+		make
+	end
 
-feature -- Queries
+feature -- Attributes
+	text: STRING
+
+feature -- Commands
 
 	-- Visitor pattern is applied here to print each expression
 
@@ -130,9 +131,5 @@ feature -- Queries
 	do
 		text.append (e.output)
 	end
-
-feature -- Queries
-
-	text: STRING
 
 end
