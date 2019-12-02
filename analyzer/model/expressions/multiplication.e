@@ -26,7 +26,7 @@ feature
 
 	accept (v: VISITOR)
 	do
-
+		v.visit_multiplication (Current)
 	end
 
 	output: STRING

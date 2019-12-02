@@ -21,7 +21,7 @@ feature -- deferred features for the visitor pattern
 	deferred
 	end
 
-	visit_substraction (e: SUBTRACTION)
+	visit_subtraction (e: SUBTRACTION)
 	deferred
 	end
 

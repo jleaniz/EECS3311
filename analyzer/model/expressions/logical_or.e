@@ -27,7 +27,7 @@ feature
 
 	accept (v: VISITOR)
 	do
-
+		v.visit_logical_or (Current)
 	end
 
 	output: STRING

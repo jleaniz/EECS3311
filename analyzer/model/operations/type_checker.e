@@ -35,7 +35,7 @@ feature -- Visitor
 
 	end
 
-	visit_substraction (e: SUBTRACTION)
+	visit_subtraction (e: SUBTRACTION)
 	do
 
 	end

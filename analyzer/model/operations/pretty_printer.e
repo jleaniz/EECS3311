@@ -40,7 +40,7 @@ feature -- Queries
 		text.append (")")
 	end
 
-	visit_substraction (e: SUBTRACTION)
+	visit_subtraction (e: SUBTRACTION)
 	do
 		text.append ("(")
 		e.left.accept (Current)

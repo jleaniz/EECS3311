@@ -26,7 +26,7 @@ feature
 
 	accept (v: VISITOR)
 	do
-
+		v.visit_greater_than (Current)
 	end
 
 	output: STRING
@@ -36,5 +36,5 @@ feature
 
 invariant
 	binary_operation: children.count = 2
-	
+
 end

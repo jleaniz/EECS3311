@@ -27,7 +27,7 @@ feature
 
 	accept (v: VISITOR)
 	do
-
+		v.visit_less_than (Current)
 	end
 
 	output: STRING

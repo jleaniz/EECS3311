@@ -26,7 +26,7 @@ feature
 
 	accept (v: VISITOR)
 	do
-
+		v.visit_equals (Current)
 	end
 
 	output: STRING
