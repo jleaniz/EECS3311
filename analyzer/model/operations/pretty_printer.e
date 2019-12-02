@@ -29,6 +29,8 @@ feature {ETF_MODEL} --hidden
 
 feature -- Queries
 
+	-- Visitor pattern is applied here to print each expression
+
 	visit_addition (e: ADDITION)
 	do
 		text.append ("(")

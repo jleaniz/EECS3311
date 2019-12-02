@@ -27,6 +27,9 @@ feature {ETF_MODEL} --hidden
 
 feature -- Visitor
 
+	-- Visitor pattern is applied here to type check each expression
+	-- TODO: Complete the visitor features (i.e. type check the expressions)
+
 	visit_addition (e: ADDITION)
 	do
 
@@ -49,7 +52,7 @@ feature -- Visitor
 
 	visit_modulo (e: MODULO)
 	do
-		
+
 	end
 
 	visit_logical_and (e: LOGICAL_AND)

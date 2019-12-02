@@ -36,7 +36,8 @@ feature -- model attributes
 
 feature -- model operations
 	default_update
-		-- Perform update to the model state.
+	-- This function does nothing, just helps avoid compilation errors for now
+	-- until the code is more complete
 	do
 		i := i + 1
 	end
@@ -47,12 +48,18 @@ feature -- model operations
 		make
 	end
 
+	-- Call this when an assignment instruction is not being specified
+	-- and the user tries to run "addition" or "add_call_chain"
+	-- See Table 2 in project specs
 	set_error_assignment_unspecified
 	do
 		status_ok := False
 		error_msg := "Error (An assignment instruction is not currently being specified).%N"
 	end
 
+	-- Call this when an assignment is being specified and the user tries
+	-- to run an operation for a class or type_check
+	-- See Table 2 in project specs
 	set_error_assignment_on (routine, class_name: STRING)
 	do
 		status_ok := False
@@ -64,6 +71,7 @@ feature -- model operations
 feature -- queries
 	out : STRING
 		do
+			-- This is where we print messages after any user input
 			create Result.make_from_string ("  ")
 			if status_ok then
 				Result.append ("Status: OK%N")

@@ -7,7 +7,7 @@ note
 deferred class
 	VISITOR
 
-feature -- deferred features
+feature -- deferred features for the visitor pattern
 
 	visit_integer(e: INTEGER_CONSTANT)
 	deferred
@@ -20,7 +20,7 @@ feature -- deferred features
 	visit_addition (e: ADDITION)
 	deferred
 	end
-	
+
 	visit_substraction (e: SUBTRACTION)
 	deferred
 	end
