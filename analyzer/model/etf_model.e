@@ -23,6 +23,7 @@ feature {NONE} -- Initialization
 			error_msg := " "
 			status_ok := True
 			assignment_instruction_on := False
+			routine_being_implemented := False
 			class_found := False
 			create classes.make (5)
 			create current_class.make_empty
@@ -42,6 +43,7 @@ feature -- model attributes
 	status_ok: BOOLEAN
 	class_found: BOOLEAN
 	assignment_instruction_on: BOOLEAN
+	routine_being_implemented: BOOLEAN
 	error_msg: STRING
 	classes: ARRAYED_LIST[LANG_CLASS]
 	current_class: LANG_CLASS
@@ -141,6 +143,10 @@ feature -- model operations
 		assignment_instruction_on := b
 	end
 
+	set_routine_being_implemented_flag (b: BOOLEAN)
+	do
+		routine_being_implemented := b
+	end
 
 feature -- queries
 	out : STRING
@@ -157,18 +163,21 @@ feature -- queries
 
 			-- print number of existing classes
 			Result.append ("  Number of classes being specified: ")
-			Result.append (classes.count.out + "%N")
+			Result.append (classes.count.out)
 
 			-- print the classes
 			across classes is c loop Result.append (c.out) end
 
 			-- print current routine being implemented
-			Result.append ("  Routine currently being implemented: ")
-			Result.append ("{" + current_class.name + "}." + current_routine + "%N")
+			if routine_being_implemented then
+				Result.append ("  Routine currently being implemented: ")
+				Result.append ("{" + current_class.name + "}." + current_routine)
+			end
 
 			-- print any assignments that are currently being specified
 			-- TODO: Fix this to use the pretty printer for all assigned expressions
 			if assignment_instruction_on then
+				Result.append ("%N")
 				Result.append ("  Assignment being specified: " + current_assignment_instruction.out + " := ?")
 			end
 		end

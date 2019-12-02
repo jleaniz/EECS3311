@@ -77,7 +77,7 @@ feature -- Queries
 		Result.append (queries.count.out  + "%N")
 		across queries is query loop Result.append (query.out)  end
 		Result.append ("      Number of commands: ")
-		Result.append (commands.count.out  + "%N")
+		Result.append (commands.count.out)
 		across commands is command loop Result.append (command.out)  end
 	end
 

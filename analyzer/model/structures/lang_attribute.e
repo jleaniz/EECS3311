@@ -43,5 +43,4 @@ feature -- Queries
 		Result.append (name + ": " + type + "%N")
 	end
 
-
 end

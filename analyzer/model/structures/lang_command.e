@@ -52,7 +52,8 @@ feature -- Commands
 feature -- Queries
 	out: STRING
 	do
-		create Result.make_from_string ("        + ")
+		create Result.make_from_string ("%N")
+		Result.append ("        + ")
 		Result.append (name + "%N")
 	end
 

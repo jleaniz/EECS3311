@@ -39,6 +39,7 @@ feature -- command
 				-- status_ok being True means the class exists and no other error was found
 				-- we can continue to add the command to the class
 				if model.status_ok then
+					model.set_routine_being_implemented_flag (True)
 					model.set_current_routine (fn)
 					model.current_command.set_name(fn)
 					model.current_command.set_params(ps)
