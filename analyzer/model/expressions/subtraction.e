@@ -26,7 +26,7 @@ feature
 
 	accept (v: VISITOR)
 	do
-		v.visit_subtraction (e: SUBTRACTION)
+		v.visit_subtraction (Current)
 	end
 
 	output: STRING
