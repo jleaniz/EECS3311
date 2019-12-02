@@ -8,7 +8,6 @@ class
 	QUOTIENT
 
 inherit
-	EXPRESSION
 	COMPOSITE_EXPRESSION[EXPRESSION]
 
 create

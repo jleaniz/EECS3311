@@ -49,7 +49,7 @@ feature -- model attributes
 	current_query: LANG_QUERY
 	current_command: LANG_COMMAND
 	current_attribute: LANG_ATTRIBUTE
-	current_assignment_instruction: LANG_ASSIGNMENT_INSTRUCTION
+	current_assignment_instruction: LANG_ASSIGNMENT
 	assignment_expressions: ARRAYED_STACK[EXPRESSION]
 	pretty_printer: PRETTY_PRINTER
 	type_checker: TYPE_CHECKER

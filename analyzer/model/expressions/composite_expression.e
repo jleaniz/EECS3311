@@ -7,6 +7,9 @@ note
 deferred class
 	COMPOSITE_EXPRESSION[G]
 
+inherit
+	EXPRESSION
+
 feature -- Attributes
 	children: LINKED_LIST[G]
 	left: EXPRESSION

@@ -8,7 +8,6 @@ class
 	EQUALS
 
 inherit
-	EXPRESSION
 	COMPOSITE_EXPRESSION[EXPRESSION]
 
 create

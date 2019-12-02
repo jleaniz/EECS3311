@@ -5,7 +5,7 @@ note
 	revision: "$Revision$"
 
 class
-	LANG_ASSIGNMENT_INSTRUCTION
+	LANG_ASSIGNMENT
 
 inherit
 	ANY

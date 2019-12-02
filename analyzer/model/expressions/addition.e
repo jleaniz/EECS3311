@@ -8,7 +8,6 @@ class
 	ADDITION
 
 inherit
-	EXPRESSION
 	COMPOSITE_EXPRESSION[EXPRESSION]
 
 create
