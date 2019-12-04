@@ -25,8 +25,12 @@ feature -- command
 			else
 				-- check for feature name clash
 				model.check_feature_name_clash (cn, fn)
-				-- check param name clash
+
+				-- check for parameter name clash
 				model.check_param_name_clash (ps)
+
+				-- check for duplicate parameters
+				model.check_dup_params (ps)
 
 				-- if the class is not found, set the appropriate error
 				if not model.class_found then

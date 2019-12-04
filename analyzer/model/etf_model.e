@@ -26,7 +26,8 @@ feature {NONE} -- Initialization
 			routine_being_implemented := False
 			class_found := False
 			feature_found := False
-
+			param_found := False
+			dup_found := False
 			create classes.make (5)
 			create current_class.make_empty
 			create current_routine.make_empty
@@ -49,6 +50,8 @@ feature -- model attributes
 	status_ok: BOOLEAN
 	class_found: BOOLEAN
 	feature_found: BOOLEAN
+	param_found: BOOLEAN
+	dup_found: BOOLEAN
 	assignment_instruction_on: BOOLEAN
 	routine_being_implemented: BOOLEAN
 	error_msg: STRING
@@ -147,7 +150,17 @@ feature -- model operations
 	set_error_dup_parameters (params: ARRAY[STRING])
 	do
 		set_status(False)
-		error_msg := "Error (Duplicated parameter names: )."
+		error_msg := "Error (Duplicated parameter names: "
+		across
+			params.lower |..| params.upper is i
+		loop
+			if i < params.upper then
+				error_msg.append (params[i] + ", ")
+			else
+				error_msg.append (params[i])
+			end
+		end
+		error_msg.append (").%N")
 	end
 
 	set_error_return_type (rt: STRING)
@@ -170,6 +183,16 @@ feature -- model operations
 	set_feature_found (b: BOOLEAN)
 	do
 		feature_found := b
+	end
+
+	set_param_found (b: BOOLEAN)
+	do
+		param_found := b
+	end
+
+	set_dup_found (b: BOOLEAN)
+	do
+		dup_found := b
 	end
 
 	set_current_class (c: LANG_CLASS)
@@ -212,6 +235,8 @@ feature -- model operations
    		set_status (True)
     	set_class_found (False)
     	set_feature_found (False)
+    	set_param_found (False)
+    	set_dup_found (False)
 	end
 
 feature -- Queries
@@ -268,10 +293,50 @@ feature -- Queries
 			across params is tuple loop
 				if c.name ~ tuple[1] then
 					list.force (c.name, list.count + 1)
+					set_param_found (True)
 				end
 			end
 		end
-		set_error_parameter_clash (list)
+		if param_found then
+			set_error_parameter_clash (list)
+		end
+	end
+
+	-- This feature checks if there are any duplicate names between
+	-- the supplied parameters for a specific command or query
+	check_dup_params (params: ARRAY[TUPLE[STRING, STRING]])
+	local
+		list: ARRAY[STRING]
+		i, j: INTEGER
+
+	do
+		create list.make_empty
+		from
+			i := params.lower
+		until
+			i > params.upper - 1
+		loop
+			from
+				j := i + 1
+			until
+				j > params.upper
+			loop
+				if attached {STRING} params[i][1] as ni then
+					if attached {STRING} params[j][1] as nj then
+						if ni ~ nj then
+							list.force (ni, list.count + 1)
+							set_dup_found (True)
+						end
+					end
+				end
+				j := j + 1
+			end
+			i := i + 1
+		end
+
+		if dup_found then
+			set_error_dup_parameters (list)
+		end
 	end
 
 	out : STRING
