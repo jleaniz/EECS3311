@@ -168,8 +168,12 @@ feature -- model operations
     	set_feature_found (False)
 	end
 
-feature -- queries
+feature -- Queries
 
+	-- This feature checks if there is a name clash between
+	-- an attribute, command, or query within a specific class
+	-- If there is a clash, it sets the appropriate flags and
+	-- error messages.
 	check_name_clash (cn: STRING; fn: STRING)
 	do
 		-- Check if class already exists
