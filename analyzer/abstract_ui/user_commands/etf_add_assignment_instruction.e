@@ -44,7 +44,6 @@ feature -- command
 					model.classes.forth
 				end
 
-
 				-- if the class is not found, set the appropriate error
 				-- otherwise, the feature was not found
 				if not model.class_found then

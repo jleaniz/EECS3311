@@ -28,6 +28,8 @@ feature {NONE} -- Initialization
 			feature_found := False
 			param_found := False
 			dup_found := False
+			param_type_invalid := False
+			return_type_invalid := False
 			create classes.make (5)
 			create current_class.make_empty
 			create current_routine.make_empty
@@ -39,7 +41,9 @@ feature {NONE} -- Initialization
 			create pretty_printer.make
 			create type_checker.make
 			create code_gen.make
-
+			create param_types_invalid.make_empty
+			create dup_parameters.make_empty
+			create params_clash.make_empty
 			create reserved_keywords.make_empty
 			reserved_keywords.force ("INTEGER" , reserved_keywords.count + 1)
 			reserved_keywords.force ("BOOLEAN" , reserved_keywords.count + 1)
@@ -52,10 +56,15 @@ feature -- model attributes
 	feature_found: BOOLEAN
 	param_found: BOOLEAN
 	dup_found: BOOLEAN
+	param_type_invalid: BOOLEAN
+	return_Type_invalid: BOOLEAN
 	assignment_instruction_on: BOOLEAN
 	routine_being_implemented: BOOLEAN
 	error_msg: STRING
 	reserved_keywords: ARRAY[STRING]
+	dup_parameters: ARRAY[STRING]
+	params_clash: ARRAY[STRING]
+	param_types_invalid: ARRAY[STRING]
 	classes: ARRAYED_LIST[LANG_CLASS]
 	current_class: LANG_CLASS
 	current_routine: STRING
@@ -131,33 +140,50 @@ feature -- model operations
 		error_msg := "Error (Call chain is empty).%N"
 	end
 
-	set_error_parameter_clash (list: ARRAY[STRING])
+	set_error_parameter_clash
 	do
 		set_status(False)
 		error_msg := "Error (Parameter names clash with existing classes: "
 		across
-			list.lower |..| list.upper is i
+			params_clash.lower |..| params_clash.upper is i
 		loop
-			if i < list.upper then
-				error_msg.append (list[i] + ", ")
+			if i < params_clash.upper then
+				error_msg.append (params_clash[i] + ", ")
 			else
-				error_msg.append (list[i])
+				error_msg.append (params_clash[i])
 			end
 		end
 		error_msg.append (").%N")
 	end
 
-	set_error_dup_parameters (params: ARRAY[STRING])
+	set_error_param_types_invalid
+	do
+		set_status(False)
+		error_msg := "Error (Parameter types do not refer to primitive types or existing classes: "
+		across
+			param_types_invalid.lower |..| param_types_invalid.upper is i
+		loop
+			if i < param_types_invalid.upper then
+				error_msg.append (param_types_invalid[i] + ", ")
+			else
+				error_msg.append (param_types_invalid[i])
+			end
+		end
+		error_msg.append (").%N")
+	end
+
+
+	set_error_dup_parameters
 	do
 		set_status(False)
 		error_msg := "Error (Duplicated parameter names: "
 		across
-			params.lower |..| params.upper is i
+			dup_parameters.lower |..| dup_parameters.upper is i
 		loop
-			if i < params.upper then
-				error_msg.append (params[i] + ", ")
+			if i < dup_parameters.upper then
+				error_msg.append (dup_parameters[i] + ", ")
 			else
-				error_msg.append (params[i])
+				error_msg.append (dup_parameters[i])
 			end
 		end
 		error_msg.append (").%N")
@@ -193,6 +219,16 @@ feature -- model operations
 	set_dup_found (b: BOOLEAN)
 	do
 		dup_found := b
+	end
+
+	set_param_type_invalid (b: BOOLEAN)
+	do
+		param_type_invalid := b
+	end
+
+	set_return_type_invalid (b: BOOLEAN)
+	do
+		return_type_invalid := b
 	end
 
 	set_current_class (c: LANG_CLASS)
@@ -237,6 +273,8 @@ feature -- model operations
     	set_feature_found (False)
     	set_param_found (False)
     	set_dup_found (False)
+    	set_param_type_invalid (False)
+    	set_return_type_invalid (False)
 	end
 
 feature -- Queries
@@ -261,17 +299,17 @@ feature -- Queries
 				across classes.item.features.lower |..| classes.item.features.upper is i loop
 					if attached {LANG_ATTRIBUTE} classes.item.features[i] as att then
 						if att.name ~ fn  then
-							set_feature_found (True)
+							set_feature_found(True)
 							set_error_feature_already_exists (cn, fn)
 						end
 					elseif attached {LANG_COMMAND} classes.item.features[i] as cmd then
 						if cmd.name ~ fn  then
-							set_feature_found (True)
+							set_feature_found(True)
 							set_error_feature_already_exists (cn, fn)
 						end
 					elseif attached {LANG_QUERY} classes.item.features[i] as query then
 						if query.name ~ fn  then
-							set_feature_found (True)
+							set_feature_found(True)
 							set_error_feature_already_exists (cn, fn)
 						end
 					end
@@ -284,7 +322,7 @@ feature -- Queries
 
 	-- This feature checks if there is a parameter name clash
 	-- with the provided parameters
-	check_param_name_clash (params: ARRAY[TUPLE[STRING, STRING]])
+	check_param_name_clash (params: ARRAY[TUPLE[STRING, STRING]]): BOOLEAN
 	local
 		list: ARRAY[STRING]
 	do
@@ -294,17 +332,28 @@ feature -- Queries
 				if c.name ~ tuple[1] then
 					list.force (c.name, list.count + 1)
 					set_param_found (True)
+					Result := True
+				elseif tuple[1] ~ "INTEGER" then
+					list.force ("INTEGER", list.count + 1)
+					set_param_found (True)
+					Result := True
+				elseif tuple[1] ~ "BOOLEAN" then
+					list.force ("BOOLEAN", list.count + 1)
+					set_param_found (True)
+					Result := True
 				end
 			end
 		end
+
 		if param_found then
-			set_error_parameter_clash (list)
+			params_clash := list
+			set_error_parameter_clash
 		end
 	end
 
 	-- This feature checks if there are any duplicate names between
 	-- the supplied parameters for a specific command or query
-	check_dup_params (params: ARRAY[TUPLE[STRING, STRING]])
+	check_dup_params (params: ARRAY[TUPLE[STRING, STRING]]): BOOLEAN
 	local
 		list: ARRAY[STRING]
 		i, j: INTEGER
@@ -326,6 +375,7 @@ feature -- Queries
 						if ni ~ nj then
 							list.force (ni, list.count + 1)
 							set_dup_found (True)
+							Result := True
 						end
 					end
 				end
@@ -335,13 +385,40 @@ feature -- Queries
 		end
 
 		if dup_found then
-			set_error_dup_parameters (list)
+			dup_parameters := list
+			set_error_dup_parameters
 		end
+
 	end
 
-	check_parameter_type_valid (params: ARRAY[TUPLE[STRING, STRING]])
+	check_parameter_type_valid (params: ARRAY[TUPLE[STRING, STRING]]): BOOLEAN
+	local
+		list: ARRAY[STRING]
+		i: INTEGER
 	do
 		-- TODO: implement
+		create list.make_empty
+		from
+			i := params.lower
+		until
+			i > params.upper
+		loop
+			if attached {STRING} params[i][1] as ni then
+				across classes is c loop
+					if not (c.name ~ ni and (ni ~ "INTEGER" or ni ~ "BOOLEAN")) then
+						set_param_type_invalid (True)
+						list.force (ni, list.count + 1)
+						Result := True
+					end
+				end
+			end
+			i := i + 1
+		end
+
+		if param_type_invalid then
+			param_types_invalid := list
+			set_error_param_types_invalid
+		end
 	end
 
 	check_return_type_valid (rt: STRING)
