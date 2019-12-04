@@ -104,16 +104,47 @@ feature -- model operations
 		error_msg := "Status: Error (" + class_name + " is not an existing class name).%N"
 	end
 
-	set_feature_already_exists (cn, fn: STRING )
+	set_error_feature_already_exists (cn, fn: STRING )
 	do
 		set_status(False)
 		error_msg := "Status: Error (" + fn + " is already an existing feature name in class " + cn + ").%N"
 	end
 
-	set_feature_not_found (fn: STRING)
+	set_error_feature_not_found (fn: STRING)
 	do
 		set_status(False)
 		error_msg := "Error " + fn + " is not an existing feature name in class cn).%N"
+	end
+
+	set_error_call_chain_empty
+	do
+		set_status(False)
+		error_msg := "Error (Call chain is empty).%N"
+	end
+
+	set_error_parameter_clash (list: ARRAY[STRING])
+	do
+		set_status(False)
+		-- TODO: Walk through classes array to add names
+		error_msg := "Error (Parameter names clash with existing classes: )."
+	end
+
+	set_error_dup_parameters (params: ARRAY[STRING])
+	do
+		set_status(False)
+		error_msg := "Error (Duplicated parameter names: )."
+	end
+
+	set_error_return_type (rt: STRING)
+	do
+		set_status(False)
+		error_msg := "Error (Return type does not refer to a primitive type or an existing class: " + rt + ")."
+	end
+
+	set_error_cannot_specify_att (fn: STRING)
+	do
+		set_status(False)
+		error_msg := "Error (Attribute " + fn + "in class cn cannot be specified with an implementation)."
 	end
 
 	set_class_found (b: BOOLEAN)
@@ -189,17 +220,17 @@ feature -- Queries
 					if attached {LANG_ATTRIBUTE} classes.item.features[i] as att then
 						if att.name ~ fn  then
 							set_feature_found (True)
-							set_feature_already_exists (cn, fn)
+							set_error_feature_already_exists (cn, fn)
 						end
 					elseif attached {LANG_COMMAND} classes.item.features[i] as cmd then
 						if cmd.name ~ fn  then
 							set_feature_found (True)
-							set_feature_already_exists (cn, fn)
+							set_error_feature_already_exists (cn, fn)
 						end
 					elseif attached {LANG_QUERY} classes.item.features[i] as query then
 						if query.name ~ fn  then
 							set_feature_found (True)
-							set_feature_already_exists (cn, fn)
+							set_error_feature_already_exists (cn, fn)
 						end
 					end
 				end

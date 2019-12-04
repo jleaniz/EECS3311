@@ -50,7 +50,7 @@ feature -- command
 				if not model.class_found then
 					model.set_error_class_not_found (cn)
 				elseif not model.feature_found then
-					model.set_feature_not_found (fn)
+					model.set_error_feature_not_found (fn)
 				end
 
 				-- status_ok being True means the class exists and no other error was found
