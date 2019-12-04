@@ -44,9 +44,7 @@ feature {NONE} -- Initialization
 			create param_types_invalid.make_empty
 			create dup_parameters.make_empty
 			create params_clash.make_empty
-			create reserved_keywords.make_empty
-			reserved_keywords.force ("INTEGER" , reserved_keywords.count + 1)
-			reserved_keywords.force ("BOOLEAN" , reserved_keywords.count + 1)
+			params_clash.compare_objects
 		end
 
 feature -- model attributes
@@ -61,7 +59,6 @@ feature -- model attributes
 	assignment_instruction_on: BOOLEAN
 	routine_being_implemented: BOOLEAN
 	error_msg: STRING
-	reserved_keywords: ARRAY[STRING]
 	dup_parameters: ARRAY[STRING]
 	params_clash: ARRAY[STRING]
 	param_types_invalid: ARRAY[STRING]
@@ -131,19 +128,19 @@ feature -- model operations
 	set_error_feature_not_found (fn: STRING)
 	do
 		set_status(False)
-		error_msg := "Error " + fn + " is not an existing feature name in class cn).%N"
+		error_msg := "Status: Error " + fn + " is not an existing feature name in class cn).%N"
 	end
 
 	set_error_call_chain_empty
 	do
 		set_status(False)
-		error_msg := "Error (Call chain is empty).%N"
+		error_msg := "Status: Error (Call chain is empty).%N"
 	end
 
 	set_error_parameter_clash
 	do
 		set_status(False)
-		error_msg := "Error (Parameter names clash with existing classes: "
+		error_msg := "Status: Error (Parameter names clash with existing classes: "
 		across
 			params_clash.lower |..| params_clash.upper is i
 		loop
@@ -159,7 +156,7 @@ feature -- model operations
 	set_error_param_types_invalid
 	do
 		set_status(False)
-		error_msg := "Error (Parameter types do not refer to primitive types or existing classes: "
+		error_msg := "Status: Error (Parameter types do not refer to primitive types or existing classes: "
 		across
 			param_types_invalid.lower |..| param_types_invalid.upper is i
 		loop
@@ -176,7 +173,7 @@ feature -- model operations
 	set_error_dup_parameters
 	do
 		set_status(False)
-		error_msg := "Error (Duplicated parameter names: "
+		error_msg := "Status: Error (Duplicated parameter names: "
 		across
 			dup_parameters.lower |..| dup_parameters.upper is i
 		loop
@@ -192,13 +189,13 @@ feature -- model operations
 	set_error_return_type (rt: STRING)
 	do
 		set_status(False)
-		error_msg := "Error (Return type does not refer to a primitive type or an existing class: " + rt + ")."
+		error_msg := "Status: Error (Return type does not refer to a primitive type or an existing class: " + rt + ")."
 	end
 
 	set_error_cannot_specify_att (fn: STRING)
 	do
 		set_status(False)
-		error_msg := "Error (Attribute " + fn + "in class cn cannot be specified with an implementation)."
+		error_msg := "Status: Error (Attribute " + fn + "in class cn cannot be specified with an implementation)."
 	end
 
 	set_class_found (b: BOOLEAN)
@@ -323,30 +320,32 @@ feature -- Queries
 	-- This feature checks if there is a parameter name clash
 	-- with the provided parameters
 	check_param_name_clash (params: ARRAY[TUPLE[STRING, STRING]]): BOOLEAN
-	local
-		list: ARRAY[STRING]
 	do
-		create list.make_empty
-		across classes is c loop
-			across params is tuple loop
-				if c.name ~ tuple[1] then
-					list.force (c.name, list.count + 1)
-					set_param_found (True)
-					Result := True
-				elseif tuple[1] ~ "INTEGER" then
-					list.force ("INTEGER", list.count + 1)
-					set_param_found (True)
-					Result := True
-				elseif tuple[1] ~ "BOOLEAN" then
-					list.force ("BOOLEAN", list.count + 1)
-					set_param_found (True)
-					Result := True
+		create params_clash.make_empty
+
+		across params as tuple loop
+			if tuple.item[1] ~ "INTEGER"   then
+				params_clash.force ("INTEGER", params_clash.count + 1)
+				set_param_found (True)
+				Result := True
+			elseif tuple.item[1] ~ "BOOLEAN"   then
+				params_clash.force ("BOOLEAN", params_clash.count + 1)
+				set_param_found (True)
+				Result := True
+			else
+				across classes as c loop
+					if c.item.name ~ tuple.item[1] then
+						if not(params_clash.has (c.item.name)) then
+							params_clash.force (c.item.name, params_clash.count + 1)
+							set_param_found (True)
+							Result := True
+						end
+					end
 				end
 			end
 		end
 
 		if param_found then
-			params_clash := list
 			set_error_parameter_clash
 		end
 	end
@@ -440,11 +439,7 @@ feature -- Queries
 
 			-- print number of existing classes
 			Result.append ("  Number of classes being specified: ")
---			if classes.count > 0 then
---				Result.append (classes.count.out + "%N")
---			else
---				Result.append (classes.count.out)
---			end
+			Result.append (classes.count.out)
 
 			-- print the classes
 			across classes is c loop Result.append (c.out) end
