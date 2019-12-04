@@ -352,6 +352,9 @@ feature -- Queries
 
 	-- This feature checks if there are any duplicate names between
 	-- the supplied parameters for a specific command or query
+	-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	-- TODO; Fix order of duplicate parameters (at05.txt)!!!!!!!!!!!!!!!!!!!
+	-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	check_dup_params (params: ARRAY[TUPLE[STRING, STRING]]): BOOLEAN
 	local
 		list: ARRAY[STRING]
