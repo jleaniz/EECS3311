@@ -29,6 +29,13 @@ feature -- Constructor
 		create return_type.make_empty
 	end
 
+	make (fn: STRING; ps: ARRAY[TUPLE[STRING]]; rt: STRING)
+	do
+		set_name (fn)
+		set_params (ps)
+		set_return_type (rt)
+	end
+
 feature -- Commands
 
 	set_name (n: STRING)

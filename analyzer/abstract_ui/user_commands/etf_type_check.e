@@ -15,9 +15,9 @@ feature -- command
     	do
 			-- perform some update on the model state
 			if model.assignment_instruction_on then
-
+				model.set_error_assignment_on (model.current_routine, model.current_class.name)
 			else
-				model.set_error_assignment_unspecified
+
 			end
 			etf_cmd_container.on_change.notify ([Current])
     	end

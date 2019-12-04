@@ -54,7 +54,7 @@ feature -- Queries
 	do
 		create Result.make_from_string ("%N")
 		Result.append ("        + ")
-		Result.append (name + "%N")
+		Result.append (name)
 	end
 
 

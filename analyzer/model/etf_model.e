@@ -25,6 +25,7 @@ feature {NONE} -- Initialization
 			assignment_instruction_on := False
 			routine_being_implemented := False
 			class_found := False
+			feature_found := False
 			create classes.make (5)
 			create current_class.make_empty
 			create current_routine.make_empty
@@ -42,6 +43,7 @@ feature -- model attributes
 
 	status_ok: BOOLEAN
 	class_found: BOOLEAN
+	feature_found: BOOLEAN
 	assignment_instruction_on: BOOLEAN
 	routine_being_implemented: BOOLEAN
 	error_msg: STRING
@@ -108,9 +110,20 @@ feature -- model operations
 		error_msg := "Status: Error (" + fn + " is already an existing feature name in class " + cn + ").%N"
 	end
 
+	set_feature_not_found (fn: STRING)
+	do
+		set_status(False)
+		error_msg := "Error " + fn + " is not an existing feature name in class cn).%N"
+	end
+
 	set_class_found (b: BOOLEAN)
 	do
 		class_found := b
+	end
+
+	set_feature_found (b: BOOLEAN)
+	do
+		feature_found := b
 	end
 
 	set_current_class (c: LANG_CLASS)
@@ -152,9 +165,45 @@ feature -- model operations
 	do
    		set_status (True)
     	set_class_found (False)
+    	set_feature_found (False)
 	end
-	
+
 feature -- queries
+
+	check_name_clash (cn: STRING; fn: STRING)
+	do
+		-- Check if class already exists
+		from
+			classes.start
+		until
+			classes.after or class_found
+		loop
+			if classes.item.name ~ cn then
+				set_class_found (True)
+				set_current_class (classes.item)
+				across classes.item.features.lower |..| classes.item.features.upper is i loop
+					if attached {LANG_ATTRIBUTE} classes.item.features[i] as att then
+						if att.name ~ fn  then
+							set_feature_found (True)
+							set_feature_already_exists (cn, fn)
+						end
+					elseif attached {LANG_COMMAND} classes.item.features[i] as cmd then
+						if cmd.name ~ fn  then
+							set_feature_found (True)
+							set_feature_already_exists (cn, fn)
+						end
+					elseif attached {LANG_QUERY} classes.item.features[i] as query then
+						if query.name ~ fn  then
+							set_feature_found (True)
+							set_feature_already_exists (cn, fn)
+						end
+					end
+				end
+			end
+			classes.forth
+		end
+	end
+
 	out : STRING
 		do
 			-- This is where we print messages after any user input
@@ -169,13 +218,18 @@ feature -- queries
 
 			-- print number of existing classes
 			Result.append ("  Number of classes being specified: ")
-			Result.append (classes.count.out)
+			if classes.count > 0 then
+				Result.append (classes.count.out + "%N")
+			else
+				Result.append (classes.count.out)
+			end
 
 			-- print the classes
 			across classes is c loop Result.append (c.out) end
 
 			-- print current routine being implemented
 			if routine_being_implemented then
+				Result.append ("%N")
 				Result.append ("  Routine currently being implemented: ")
 				Result.append ("{" + current_class.name + "}." + current_routine)
 			end
