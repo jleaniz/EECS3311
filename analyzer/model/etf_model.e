@@ -26,6 +26,7 @@ feature {NONE} -- Initialization
 			routine_being_implemented := False
 			class_found := False
 			feature_found := False
+
 			create classes.make (5)
 			create current_class.make_empty
 			create current_routine.make_empty
@@ -37,6 +38,10 @@ feature {NONE} -- Initialization
 			create pretty_printer.make
 			create type_checker.make
 			create code_gen.make
+
+			create reserved_keywords.make_empty
+			reserved_keywords.force ("INTEGER" , reserved_keywords.count + 1)
+			reserved_keywords.force ("BOOLEAN" , reserved_keywords.count + 1)
 		end
 
 feature -- model attributes
@@ -47,6 +52,7 @@ feature -- model attributes
 	assignment_instruction_on: BOOLEAN
 	routine_being_implemented: BOOLEAN
 	error_msg: STRING
+	reserved_keywords: ARRAY[STRING]
 	classes: ARRAYED_LIST[LANG_CLASS]
 	current_class: LANG_CLASS
 	current_routine: STRING
@@ -125,8 +131,19 @@ feature -- model operations
 	set_error_parameter_clash (list: ARRAY[STRING])
 	do
 		set_status(False)
+		error_msg := "Error (Parameter names clash with existing classes: "
 		-- TODO: Walk through classes array to add names
-		error_msg := "Error (Parameter names clash with existing classes: )."
+		across
+			list.lower |..| list.upper is i
+		loop
+			if i < list.upper then
+				error_msg.append (list[i] + ", ")
+			else
+				error_msg.append (list[i])
+			end
+
+		end
+		error_msg.append (").%N")
 	end
 
 	set_error_dup_parameters (params: ARRAY[STRING])
@@ -205,7 +222,9 @@ feature -- Queries
 	-- an attribute, command, or query within a specific class
 	-- If there is a clash, it sets the appropriate flags and
 	-- error messages.
-	check_name_clash (cn: STRING; fn: STRING)
+	check_feature_name_clash (cn: STRING; fn: STRING)
+	require
+		cn /= Void and fn /= Void
 	do
 		-- Check if class already exists
 		from
@@ -239,6 +258,24 @@ feature -- Queries
 		end
 	end
 
+
+	-- This feature checks if there is a parameter name clash
+	-- with the provided parameters
+	check_param_name_clash (params: ARRAY[TUPLE[STRING, STRING]])
+	local
+		list: ARRAY[STRING]
+	do
+		create list.make_empty
+		across classes is c loop
+			across params is tuple loop
+				if c.name ~ tuple[1] then
+					list.force (c.name, list.count + 1)
+				end
+			end
+		end
+		set_error_parameter_clash (list)
+	end
+
 	out : STRING
 		do
 			-- This is where we print messages after any user input
@@ -253,11 +290,11 @@ feature -- Queries
 
 			-- print number of existing classes
 			Result.append ("  Number of classes being specified: ")
-			if classes.count > 0 then
-				Result.append (classes.count.out + "%N")
-			else
-				Result.append (classes.count.out)
-			end
+--			if classes.count > 0 then
+--				Result.append (classes.count.out + "%N")
+--			else
+--				Result.append (classes.count.out)
+--			end
 
 			-- print the classes
 			across classes is c loop Result.append (c.out) end

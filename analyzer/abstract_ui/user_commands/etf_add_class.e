@@ -14,6 +14,9 @@ feature -- command
 	add_class(cn: STRING)
 		require else
 			add_class_precond(cn)
+
+		local
+			local_class: LANG_CLASS
     	do
     		model.reset_flags
 			-- check if an assignment is being specified
@@ -29,10 +32,10 @@ feature -- command
 
 				-- if the status is ok, add the class...
 				if model.status_ok then
-					model.current_class.make (cn)
-					model.classes.extend (model.current_class)
+					create local_class.make (cn)
+					model.classes.extend (local_class)
+					model.set_current_class (local_class)
 				end
-
 			end
 
 			etf_cmd_container.on_change.notify ([Current])

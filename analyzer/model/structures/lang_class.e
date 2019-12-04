@@ -67,8 +67,8 @@ feature -- Commands
 feature -- Queries
 	out: STRING
 	do
-		create Result.make_from_string ("    ")
-		Result.append (name + "%N")
+		create Result.make_from_string ("%N")
+		Result.append ("    " + name + "%N")
 		Result.append ("      Number of attributes: ")
 		Result.append (attributes.count.out + "%N")
 		across attributes is att loop Result.append (att.out)  end

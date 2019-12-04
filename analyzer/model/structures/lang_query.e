@@ -14,7 +14,7 @@ inherit
 	end
 
 create
-	make_empty
+	make_empty, make
 
 feature -- Attributes
 	name: STRING -- command name
