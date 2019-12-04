@@ -33,8 +33,10 @@ feature -- command
 					model.set_error_parameter_clash
 				elseif model.check_dup_params (ps) then
 					model.set_error_dup_parameters
-				elseif model.check_param_name_clash (ps) then
+				elseif model.check_parameter_type_invalid (ps) then
 					model.set_error_param_types_invalid
+				elseif model.check_return_type_invalid (rt) then
+					model.set_error_return_type (rt)
 				end
 
 				-- status_ok being True means the class exists and no other error was found

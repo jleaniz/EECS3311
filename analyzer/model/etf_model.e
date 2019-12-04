@@ -44,7 +44,6 @@ feature {NONE} -- Initialization
 			create param_types_invalid.make_empty
 			create dup_parameters.make_empty
 			create params_clash.make_empty
-			params_clash.compare_objects
 		end
 
 feature -- model attributes
@@ -189,13 +188,13 @@ feature -- model operations
 	set_error_return_type (rt: STRING)
 	do
 		set_status(False)
-		error_msg := "Status: Error (Return type does not refer to a primitive type or an existing class: " + rt + ")."
+		error_msg := "Status: Error (Return type does not refer to a primitive type or an existing class: " + rt + ").%N"
 	end
 
 	set_error_cannot_specify_att (fn: STRING)
 	do
 		set_status(False)
-		error_msg := "Status: Error (Attribute " + fn + "in class cn cannot be specified with an implementation)."
+		error_msg := "Status: Error (Attribute " + fn + "in class cn cannot be specified with an implementation).%N"
 	end
 
 	set_class_found (b: BOOLEAN)
@@ -393,39 +392,45 @@ feature -- Queries
 
 	end
 
-	check_parameter_type_valid (params: ARRAY[TUPLE[STRING, STRING]]): BOOLEAN
+	-- This feature checks if the parameters are invalid
+	check_parameter_type_invalid (params: ARRAY[TUPLE[STRING, STRING]]): BOOLEAN
 	local
-		list: ARRAY[STRING]
 		i: INTEGER
+		p, q: BOOLEAN
 	do
 		-- TODO: implement
-		create list.make_empty
+		create param_types_invalid.make_empty
 		from
 			i := params.lower
 		until
 			i > params.upper
 		loop
-			if attached {STRING} params[i][1] as ni then
-				across classes is c loop
-					if not (c.name ~ ni and (ni ~ "INTEGER" or ni ~ "BOOLEAN")) then
-						set_param_type_invalid (True)
-						list.force (ni, list.count + 1)
-						Result := True
-					end
+			if attached {STRING} params[i][2] as ni then
+				p := across classes is c all c.name /~ ni end
+				q := (ni /~ "INTEGER") and (ni /~ "BOOLEAN")
+				if p and q then
+					set_param_type_invalid (True)
+					Result := True
+					param_types_invalid.force (ni, param_types_invalid.count + 1)
 				end
 			end
 			i := i + 1
 		end
 
 		if param_type_invalid then
-			param_types_invalid := list
 			set_error_param_types_invalid
 		end
 	end
 
-	check_return_type_valid (rt: STRING)
+	-- This feature checks if the return type is valid
+	check_return_type_invalid (rt: STRING): BOOLEAN
 	do
-		-- TODO: implement
+		if across classes is c all c.name /~ rt end then
+			if rt /~ "INTEGER" and rt /~ "BOOLEAN" then
+				set_return_type_invalid (True)
+				Result := True
+			end
+		end
 	end
 
 	out : STRING

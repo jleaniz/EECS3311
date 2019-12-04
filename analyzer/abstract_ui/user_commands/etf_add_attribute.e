@@ -26,12 +26,11 @@ feature -- command
 				-- check feature name clash
 				model.check_feature_name_clash (cn, fn)
 
-				-- check return type
-				model.check_return_type_valid (ft)
-
 				-- if the class is not found, set the appropriate error
 				if not model.class_found then
 					model.set_error_class_not_found (cn)
+				elseif model.check_return_type_invalid (ft) then
+					model.set_error_return_type (ft)
 				end
 
 				-- status_ok being True means the class exists and no other error was found
