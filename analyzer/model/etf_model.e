@@ -132,7 +132,6 @@ feature -- model operations
 	do
 		set_status(False)
 		error_msg := "Error (Parameter names clash with existing classes: "
-		-- TODO: Walk through classes array to add names
 		across
 			list.lower |..| list.upper is i
 		loop
@@ -141,7 +140,6 @@ feature -- model operations
 			else
 				error_msg.append (list[i])
 			end
-
 		end
 		error_msg.append (").%N")
 	end
