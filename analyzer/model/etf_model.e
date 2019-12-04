@@ -339,6 +339,16 @@ feature -- Queries
 		end
 	end
 
+	check_parameter_type_valid (params: ARRAY[TUPLE[STRING, STRING]])
+	do
+		-- TODO: implement
+	end
+
+	check_return_type_valid (rt: STRING)
+	do
+		-- TODO: implement
+	end
+
 	out : STRING
 		do
 			-- This is where we print messages after any user input
