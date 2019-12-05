@@ -13,7 +13,7 @@ create
 feature -- command
 	quotient
     	do
-			-- perform some update on the model state
+    		model.reset_flags
 
 			etf_cmd_container.on_change.notify ([Current])
     	end

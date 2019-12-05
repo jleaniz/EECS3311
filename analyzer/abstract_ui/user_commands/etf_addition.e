@@ -13,6 +13,7 @@ create
 feature -- command
 	addition
     	do
+    		model.reset_flags
 			-- perform some update on the model state
 			if model.assignment_instruction_on then
 
