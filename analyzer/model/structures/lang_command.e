@@ -55,6 +55,15 @@ feature -- Queries
 		create Result.make_from_string ("%N")
 		Result.append ("        + ")
 		Result.append (name)
+		across parameters.lower |..| parameters.upper is i loop
+			if attached {STRING} parameters[i][2] as param then
+				if i < parameters.upper then
+					Result.append("("+param + ", ")
+				else
+					Result.append(param + ")")
+				end
+			end
+		end
 	end
 
 
