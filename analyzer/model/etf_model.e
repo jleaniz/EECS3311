@@ -44,6 +44,10 @@ feature {NONE} -- Initialization
 			create param_types_invalid.make_empty
 			create dup_parameters.make_empty
 			create params_clash.make_empty
+			attribute_found := False
+			command_found := False
+			query_found := False
+			assigin_attribute_implementation_error := False
 		end
 
 feature -- model attributes
@@ -72,6 +76,11 @@ feature -- model attributes
 	pretty_printer: PRETTY_PRINTER
 	type_checker: TYPE_CHECKER
 	code_gen: CODE_GENERATOR
+	--new attributes
+	attribute_found: BOOLEAN
+	command_found: BOOLEAN
+	query_found: BOOLEAN
+	assigin_attribute_implementation_error: BOOLEAN
 
 feature -- model operations
 
@@ -124,10 +133,10 @@ feature -- model operations
 		error_msg := "Status: Error (" + fn + " is already an existing feature name in class " + cn + ").%N"
 	end
 
-	set_error_feature_not_found (fn: STRING)
+	set_error_feature_not_found (fn: STRING; cn: STRING) --used in ETF_ADD_ASSIGNMENT
 	do
 		set_status(False)
-		error_msg := "Status: Error " + fn + " is not an existing feature name in class cn).%N"
+		error_msg := "Status: Error (" + fn + " is not an existing feature name in class "+ cn +").%N"
 	end
 
 	set_error_call_chain_empty
@@ -191,10 +200,10 @@ feature -- model operations
 		error_msg := "Status: Error (Return type does not refer to a primitive type or an existing class: " + rt + ").%N"
 	end
 
-	set_error_cannot_specify_att (fn: STRING)
+	set_error_cannot_specify_att (fn: STRING; cn: STRING) --used in ETF_ADD_ASSIGNMENT
 	do
 		set_status(False)
-		error_msg := "Status: Error (Attribute " + fn + "in class cn cannot be specified with an implementation).%N"
+		error_msg := "Status: Error (Attribute " + fn + " in class " + cn + " cannot be specified with an implementation).%N"
 	end
 
 	set_class_found (b: BOOLEAN)
@@ -271,8 +280,36 @@ feature -- model operations
     	set_dup_found (False)
     	set_param_type_invalid (False)
     	set_return_type_invalid (False)
+    	set_attribute_found(False)
+    	set_command_found(False)
+    	set_query_found(False)
+--    	set_assigin_attribute_implementation_error(False)
 	end
 
+	--new methods:
+	set_attribute_found(b: BOOLEAN)
+	do
+		attribute_found:= b
+	end
+
+	set_command_found(b: BOOLEAN)
+	do
+		command_found := b
+	end
+	set_query_found(b: BOOLEAN)
+	do
+		query_found := b
+	end
+
+	set_current_assignment_instruction(a: LANG_ASSIGNMENT)
+	do
+		current_assignment_instruction := a
+	end
+
+	set_assigin_attribute_implementation_error(b: BOOLEAN)
+	do
+		assigin_attribute_implementation_error := b
+	end
 feature -- Queries
 
 	-- This feature checks if there is a name clash between
@@ -440,7 +477,7 @@ feature -- Queries
 
 			-- print status and/or error
 			if status_ok then
-				Result.append ("Status: OK%N")
+				Result.append ("Status: OK.%N")
 			else
 				Result.append (error_msg)
 			end
