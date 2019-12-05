@@ -127,7 +127,7 @@ feature -- model operations
 	set_error_feature_not_found (fn: STRING)
 	do
 		set_status(False)
-		error_msg := "Status: Error " + fn + " is not an existing feature name in class cn).%N"
+		error_msg := "Status: Error (" + fn + " is not an existing feature name in class cn).%N"
 	end
 
 	set_error_call_chain_empty
@@ -398,7 +398,6 @@ feature -- Queries
 		i: INTEGER
 		p, q: BOOLEAN
 	do
-		-- TODO: implement
 		create param_types_invalid.make_empty
 		from
 			i := params.lower
