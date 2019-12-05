@@ -14,7 +14,6 @@ feature -- command
 	bool_value(c: BOOLEAN)
     	do
 			-- perform some update on the model state
-
 			etf_cmd_container.on_change.notify ([Current])
     	end
 

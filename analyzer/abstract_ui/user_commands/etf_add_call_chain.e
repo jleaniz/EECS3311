@@ -15,7 +15,9 @@ feature -- command
     	do
 			-- perform some update on the model state
 			if model.assignment_instruction_on then
-
+				if chain.is_empty then
+					model.set_error_call_chain_empty
+				end
 			else
 				model.set_error_assignment_unspecified
 			end

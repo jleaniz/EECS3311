@@ -136,11 +136,7 @@ feature -- model operations
 	set_error_feature_not_found (fn: STRING; cn: STRING) --used in ETF_ADD_ASSIGNMENT
 	do
 		set_status(False)
-<<<<<<< HEAD
 		error_msg := "Status: Error (" + fn + " is not an existing feature name in class "+ cn +").%N"
-=======
-		error_msg := "Status: Error (" + fn + " is not an existing feature name in class cn).%N"
->>>>>>> dba9d61a92a50b8e8e0964ac8eef62071a25b2c4
 	end
 
 	set_error_call_chain_empty
@@ -316,6 +312,22 @@ feature -- model operations
 	end
 feature -- Queries
 
+	-- check if class exists
+	check_class_found (cn: STRING)
+	do
+		from
+			classes.start
+		until
+			classes.after
+		loop
+			if classes.item.name ~ cn then
+				set_class_found (True)
+				set_current_class (classes.item)
+			end
+			classes.forth
+		end
+	end
+
 	-- This feature checks if there is a name clash between
 	-- an attribute, command, or query within a specific class
 	-- If there is a clash, it sets the appropriate flags and
@@ -349,6 +361,37 @@ feature -- Queries
 							set_feature_found(True)
 							set_error_feature_already_exists (cn, fn)
 						end
+					end
+				end
+			end
+			classes.forth
+		end
+	end
+
+	check_feature_exists (cn, fn: STRING)
+	require
+		cn /= Void and fn /= Void
+	local
+		p, q: BOOLEAN
+	do
+		from
+			classes.start
+		until
+			classes.after
+		loop
+			if classes.item.name ~ cn then
+				p := across classes.item.attributes is i some i.name ~ fn  end
+				if p then
+					set_error_cannot_specify_att (cn, fn)
+				end
+				if not p then
+					q := (
+					across classes.item.commands is j all j.name /~ fn end
+					and
+					across classes.item.queries is k all k.name /~ fn  end
+					)
+					if q then
+						set_error_feature_not_found (cn, fn)
 					end
 				end
 			end
