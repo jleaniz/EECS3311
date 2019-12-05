@@ -30,6 +30,7 @@ feature {NONE} -- Initialization
 			dup_found := False
 			param_type_invalid := False
 			return_type_invalid := False
+			gen_code_on := False
 			create classes.make (5)
 			create current_class.make_empty
 			create current_routine.make_empty
@@ -44,6 +45,7 @@ feature {NONE} -- Initialization
 			create param_types_invalid.make_empty
 			create dup_parameters.make_empty
 			create params_clash.make_empty
+			create code.make_empty
 			attribute_found := False
 			command_found := False
 			query_found := False
@@ -80,6 +82,8 @@ feature -- model attributes
 	attribute_found: BOOLEAN
 	command_found: BOOLEAN
 	query_found: BOOLEAN
+	gen_code_on: BOOLEAN
+	code: STRING
 	assigin_attribute_implementation_error: BOOLEAN
 
 feature -- model operations
@@ -143,6 +147,11 @@ feature -- model operations
 	do
 		set_status(False)
 		error_msg := "Status: Error (Call chain is empty).%N"
+	end
+
+	set_code (c: STRING)
+	do
+		code := c
 	end
 
 	set_error_parameter_clash
@@ -283,10 +292,16 @@ feature -- model operations
     	set_attribute_found(False)
     	set_command_found(False)
     	set_query_found(False)
+    	set_gen_code(False)
 --    	set_assigin_attribute_implementation_error(False)
 	end
 
 	--new methods:
+	set_gen_code (b: BOOLEAN)
+	do
+		gen_code_on := b
+	end
+
 	set_attribute_found(b: BOOLEAN)
 	do
 		attribute_found:= b
@@ -547,6 +562,11 @@ feature -- Queries
 			if assignment_instruction_on then
 				Result.append ("%N")
 				Result.append ("  Assignment being specified:" + current_assignment_instruction.out + " := ?")
+			end
+
+			if gen_code_on then
+				Result.make_empty
+				Result.append (code)
 			end
 		end
 

@@ -18,7 +18,7 @@ create
 
 feature -- Attributes
 	name: STRING -- command name
-	parameters: ARRAY[TUPLE[STRING]] -- command parameters
+	parameters: ARRAY[TUPLE[STRING, STRING]] -- command parameters
 
 feature -- Constructor
 	make_empty
@@ -44,7 +44,7 @@ feature -- Commands
 		name := n
 	end
 
-	set_params (p: ARRAY[TUPLE[STRING]])
+	set_params (p: ARRAY[TUPLE[STRING, STRING]])
 	do
 		parameters := p
 	end

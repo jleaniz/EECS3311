@@ -18,7 +18,7 @@ create
 
 feature -- Attributes
 	name: STRING -- command name
-	parameters: ARRAY[TUPLE[STRING]] -- command parameters
+	parameters: ARRAY[TUPLE[STRING,STRING]] -- command parameters
 	return_type: STRING -- return type
 
 feature -- Constructor
@@ -29,7 +29,7 @@ feature -- Constructor
 		create return_type.make_empty
 	end
 
-	make (fn: STRING; ps: ARRAY[TUPLE[STRING]]; rt: STRING)
+	make (fn: STRING; ps: ARRAY[TUPLE[STRING,STRING]]; rt: STRING)
 	do
 		set_name (fn)
 		set_params (ps)
@@ -43,7 +43,7 @@ feature -- Commands
 		name := n
 	end
 
-	set_params (p: ARRAY[TUPLE[STRING]])
+	set_params (p: ARRAY[TUPLE[STRING,STRING]])
 	do
 		parameters := p
 	end
