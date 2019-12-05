@@ -133,7 +133,7 @@ feature -- model operations
 		error_msg := "Status: Error (" + fn + " is already an existing feature name in class " + cn + ").%N"
 	end
 
-	set_error_feature_not_found (fn: STRING; cn: STRING) --used in ETF_ADD_ASSIGNMENT
+	set_error_feature_not_found (cn, fn: STRING) --used in ETF_ADD_ASSIGNMENT
 	do
 		set_status(False)
 		error_msg := "Status: Error (" + fn + " is not an existing feature name in class "+ cn +").%N"
@@ -200,7 +200,7 @@ feature -- model operations
 		error_msg := "Status: Error (Return type does not refer to a primitive type or an existing class: " + rt + ").%N"
 	end
 
-	set_error_cannot_specify_att (fn: STRING; cn: STRING) --used in ETF_ADD_ASSIGNMENT
+	set_error_cannot_specify_att (cn: STRING; fn: STRING) --used in ETF_ADD_ASSIGNMENT
 	do
 		set_status(False)
 		error_msg := "Status: Error (Attribute " + fn + " in class " + cn + " cannot be specified with an implementation).%N"
