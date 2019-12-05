@@ -57,7 +57,12 @@ feature -- Queries
 	out: STRING
 	do
 		create Result.make_from_string ("        + ")
+<<<<<<< HEAD
+--		Result.append ("        + ")
+		Result.append (name + ": "+ return_type +"%N")
+=======
 		Result.append (name + ": " + return_type + "%N")
+>>>>>>> dba9d61a92a50b8e8e0964ac8eef62071a25b2c4
 	end
 
 end
