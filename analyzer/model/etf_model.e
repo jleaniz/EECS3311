@@ -456,10 +456,29 @@ feature -- Queries
 	check_dup_params (params: ARRAY[TUPLE[STRING, STRING]]): BOOLEAN
 	local
 		list: ARRAY[STRING]
+		dups: ARRAY[STRING]
 		i, j: INTEGER
 
 	do
 		create list.make_empty
+		create dups.make_empty
+		list.compare_objects
+--		from
+--			i := params.lower
+--		until
+--			i > params.upper
+--		loop
+--			if attached {STRING} params[i][1] as ni then
+--				if list.has (ni) then
+--					dups.force (ni, dups.count + 1)
+--					set_dup_found (True)
+--					Result := True
+--				end
+--				list.force (ni, list.count + 1)
+--			end
+--			i := i + 1
+--		end
+
 		from
 			i := params.lower
 		until
@@ -471,9 +490,10 @@ feature -- Queries
 				j > params.upper
 			loop
 				if attached {STRING} params[i][1] as ni then
+					list.force (ni, list.count + 1)
 					if attached {STRING} params[j][1] as nj then
-						if ni ~ nj then
-							list.force (ni, list.count + 1)
+						if list.has (nj) then
+							dups.force (nj, dups.count + 1)
 							set_dup_found (True)
 							Result := True
 						end
@@ -485,7 +505,7 @@ feature -- Queries
 		end
 
 		if dup_found then
-			dup_parameters := list
+			dup_parameters := dups
 			set_error_dup_parameters
 		end
 

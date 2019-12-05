@@ -26,9 +26,9 @@ feature -- Constructor
 		name := an
 		create type.make_empty
 		if att_type ~ "INTEGER" then
-			type := "int"
+			type := "INTEGER"
 		elseif att_type ~ "BOOLEAN" then
-			type := "boolean"
+			type := "BOOLEAN"
 		end
 	end
 
