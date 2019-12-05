@@ -463,46 +463,47 @@ feature -- Queries
 		create list.make_empty
 		create dups.make_empty
 		list.compare_objects
---		from
---			i := params.lower
---		until
---			i > params.upper
---		loop
---			if attached {STRING} params[i][1] as ni then
---				if list.has (ni) then
---					dups.force (ni, dups.count + 1)
---					set_dup_found (True)
---					Result := True
---				end
---				list.force (ni, list.count + 1)
---			end
---			i := i + 1
---		end
-
 		from
 			i := params.lower
 		until
-			i > params.upper - 1
+			i > params.upper
 		loop
-			from
-				j := i + 1
-			until
-				j > params.upper
-			loop
-				if attached {STRING} params[i][1] as ni then
+			if attached {STRING} params[i][1] as ni then
+				if not list.has (ni) then
 					list.force (ni, list.count + 1)
-					if attached {STRING} params[j][1] as nj then
-						if list.has (nj) then
-							dups.force (nj, dups.count + 1)
-							set_dup_found (True)
-							Result := True
-						end
-					end
+				else
+					dups.force (ni, dups.count + 1)
+					set_dup_found (True)
+					Result := True
 				end
-				j := j + 1
 			end
 			i := i + 1
 		end
+
+--		from
+--			i := params.lower
+--		until
+--			i > params.upper - 1
+--		loop
+--			from
+--				j := i + 1
+--			until
+--				j > params.upper
+--			loop
+--				if attached {STRING} params[i][1] as ni then
+--					list.force (ni, list.count + 1)
+--					if attached {STRING} params[j][1] as nj then
+--						if list.has (nj) then
+--							dups.force (nj, dups.count + 1)
+--							set_dup_found (True)
+--							Result := True
+--						end
+--					end
+--				end
+--				j := j + 1
+--			end
+--			i := i + 1
+--		end
 
 		if dup_found then
 			dup_parameters := dups
