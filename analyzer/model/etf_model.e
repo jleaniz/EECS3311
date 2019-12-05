@@ -136,7 +136,11 @@ feature -- model operations
 	set_error_feature_not_found (fn: STRING; cn: STRING) --used in ETF_ADD_ASSIGNMENT
 	do
 		set_status(False)
+<<<<<<< HEAD
 		error_msg := "Status: Error (" + fn + " is not an existing feature name in class "+ cn +").%N"
+=======
+		error_msg := "Status: Error (" + fn + " is not an existing feature name in class cn).%N"
+>>>>>>> dba9d61a92a50b8e8e0964ac8eef62071a25b2c4
 	end
 
 	set_error_call_chain_empty
@@ -435,7 +439,6 @@ feature -- Queries
 		i: INTEGER
 		p, q: BOOLEAN
 	do
-		-- TODO: implement
 		create param_types_invalid.make_empty
 		from
 			i := params.lower
