@@ -325,6 +325,32 @@ feature -- model operations
 	do
 		assigin_attribute_implementation_error := b
 	end
+
+	test_ADDITION(b:ADDITION)
+	local
+		c, d: INTEGER_CONSTANT
+
+	do
+		create c.make(1)
+		create d.make(1)
+		b.make (c, d)
+
+--		b.left.accept (c)
+	end
+
+	test_expression_addition: BOOLEAN -----------------new method
+	local
+		add, c1, c2: EXPRESSION; v: VISITOR
+	do
+		create {INTEGER_CONSTANT} c1.make (1); create {INTEGER_CONSTANT} c2.make (1)
+		create {ADDITION} add.make (c1, c2)
+		create {TYPE_CHECKER} v.make
+		add.accept(v)
+		check attached {TYPE_CHECKER} v as checker then
+			Result := checker.type_correct ~ true
+			end
+
+	end
 feature -- Queries
 
 	-- check if class exists
@@ -457,7 +483,7 @@ feature -- Queries
 	local
 		list: ARRAY[STRING]
 		dups: ARRAY[STRING]
-		i, j: INTEGER
+		i: INTEGER
 
 	do
 		create list.make_empty
@@ -556,6 +582,9 @@ feature -- Queries
 		do
 			-- This is where we print messages after any user input
 			create Result.make_from_string ("  ")
+--			if test_expression_addition then
+--				result.append("%N%N testing addition worked! %N%N")
+--			end
 
 			-- print status and/or error
 			if status_ok then

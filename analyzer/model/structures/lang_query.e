@@ -19,6 +19,7 @@ create
 feature -- Attributes
 	name: STRING -- command name
 	parameters: ARRAY[TUPLE[STRING,STRING]] -- command parameters
+--	implementation: ARRAY[ARRAY[EXPRESSION]]
 	return_type: STRING -- return type
 
 feature -- Constructor
@@ -27,6 +28,7 @@ feature -- Constructor
 		create name.make_empty
 		create parameters.make_empty
 		create return_type.make_empty
+--		create implementation.make_empty
 	end
 
 	make (fn: STRING; ps: ARRAY[TUPLE[STRING,STRING]]; rt: STRING)
@@ -52,6 +54,7 @@ feature -- Commands
 	do
 		return_type := r
 	end
+
 
 feature -- Queries
 	out: STRING

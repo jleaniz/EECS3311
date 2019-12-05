@@ -33,8 +33,25 @@ feature -- Visitor
 	-- TODO: Complete the visitor features (i.e. type check the expressions)
 
 	visit_addition (e: ADDITION)
+	local
+			check_left, check_right: TYPE_CHECKER
+			left_is_integer, right_is_integer: BOOLEAN
 	do
-
+--		create a.make_from_string ("hery")
+		create check_left.make
+		create check_right.make
+		left_is_integer := false
+		right_is_integer := false
+		e.left.accept (check_left)
+		e.right.accept (check_right)
+		value := check_left.value + check_right.value
+		if attached {INTEGER} check_left.value then
+			left_is_integer := TRUE
+		end
+		if attached {INTEGER} check_right.value then
+			right_is_integer := TRUE
+		end
+		type_correct := left_is_integer AND right_is_integer
 	end
 
 	visit_subtraction (e: SUBTRACTION)
@@ -84,7 +101,7 @@ feature -- Visitor
 
 	visit_integer(e: INTEGER_CONSTANT)
 	do
-
+		value := e.value
 	end
 
 	visit_boolean(e: BOOLEAN_CONSTANT)

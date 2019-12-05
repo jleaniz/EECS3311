@@ -10,6 +10,15 @@ class
 inherit
 	EXPRESSION
 
+create
+	make
+
+feature -- Constructor
+	make (i: INTEGER)
+	do
+		value := i
+	end
+
 feature -- Attributes
 	value: INTEGER
 

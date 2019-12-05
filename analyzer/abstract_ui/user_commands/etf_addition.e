@@ -21,6 +21,7 @@ feature -- command
 				model.set_error_assignment_unspecified
 			end
 
+
 			etf_cmd_container.on_change.notify ([Current])
     	end
 
